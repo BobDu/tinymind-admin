@@ -1,0 +1,48 @@
+{
+  "name": "tinymind-admin",
+  "version": "0.0.1",
+  "description": "TinyMind Admin.",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "ra-data-json-server": "^2.9.4",
+    "react": "16.x",
+    "react-admin": "2.x",
+    "react-dom": "16.x",
+    "react-scripts": "3.x"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BobDu/tinymind-admin.git"
+  },
+  "keywords": [
+    "tinymind"
+  ],
+  "author": "BobDu",
+  "bugs": {
+    "url": "https://github.com/BobDu/tinymind-admin/issues"
+  },
+  "homepage": "https://github.com/BobDu/tinymind-admin#readme"
+}
