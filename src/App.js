@@ -23,28 +23,22 @@
 //   );
 // }
 
-// export default App;
+import React from "react";
+import { Admin, Resource, ListGuesser, EditGuesser } from "react-admin";
+import jsonServerProvider from "ra-data-json-server";
 
+import { ExecutionList, ExecutionIcon} from "./executions";
+import { InstanceList, InstanceIcon } from "./instances";
+import { UserList, UserIcon } from "./users";
 
-// import React from 'react';
-// import { render } from 'react-dom';
-// import { Admin, Resource } from 'react-admin';
-// import simpleRestProvider from 'ra-data-simple-rest';
+const dataProvider = jsonServerProvider('http://localhost:1715');
 
-// import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
-
-// render(
-//     <Admin dataProvider={simpleRestProvider('http://localhost:3000')}>
-//         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon}/>
-//     </Admin>,
-//     document.getElementById('root')
-// );
-
-import React from 'react';
-import { Admin } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
-
-const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
-const App = () => <Admin dataProvider={dataProvider} />;
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="instances" list={InstanceList} icon={InstanceIcon} />
+        <Resource name="executions" list={ExecutionList} icon={ExecutionIcon} />
+        <Resource name="users" list={UserList} icon={UserIcon} />
+    </Admin>
+);
 
 export default App;

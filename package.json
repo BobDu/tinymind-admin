@@ -10,7 +10,8 @@
     "react": "16.x",
     "react-admin": "2.x",
     "react-dom": "16.x",
-    "react-scripts": "3.x"
+    "react-scripts": "3.x",
+    "@material-ui/icons": "x"
   },
   "scripts": {
     "start": "react-scripts start",
