@@ -1,0 +1,30 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "airbnb",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:react/recommended"
+  ],
+  "env":{
+    "browser":true,
+    "node":true,
+    "es6":true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules":true
+    }
+  },
+  "plugins": [
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

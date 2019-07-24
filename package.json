@@ -3,22 +3,6 @@
   "version": "0.0.1",
   "description": "TinyMind Admin.",
   "private": true,
-  "main": "index.js",
-  "dependencies": {
-    "prop-types": "^15.7.2",
-    "ra-data-json-server": "^2.9.4",
-    "react": "16.x",
-    "react-admin": "2.x",
-    "react-dom": "16.x",
-    "react-scripts": "3.x",
-    "@material-ui/icons": "x"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -45,5 +29,31 @@
   "bugs": {
     "url": "https://github.com/BobDu/tinymind-admin/issues"
   },
-  "homepage": "https://github.com/BobDu/tinymind-admin#readme"
+  "homepage": "https://github.com/BobDu/tinymind-admin#readme",
+  "main": "index.js",
+  "dependencies": {
+    "@material-ui/icons": "x",
+    "moment": "2.x",
+    "prop-types": "^15.7.2",
+    "ra-data-json-server": "^2.9.4",
+    "react": "16.x",
+    "react-admin": "2.x",
+    "react-dom": "16.x",
+    "react-scripts": "3.x"
+  },
+  "devDependencies": {
+    "eslint": "5.x",
+    "eslint-config-airbnb": "*",
+    "eslint-plugin-import": "*",
+    "eslint-plugin-jsx-a11y": "*",
+    "eslint-plugin-react": "*"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "lint": "eslint src/",
+    "lint-fix": "eslint src/ --fix",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  }
 }
