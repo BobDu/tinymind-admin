@@ -4,7 +4,7 @@ import {
   TextField, NumberField, BooleanField, ReferenceField,
 } from 'react-admin';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
-import UnixDateField from '../field/UnixDateField';
+import UnixDateField from '../ui/field/UnixDateField';
 
 export const CouponIcon = CardGiftcardIcon;
 

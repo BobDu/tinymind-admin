@@ -1,12 +1,18 @@
 import React from 'react';
 import {
-  List, Create, Edit, Show, Datagrid, SimpleShowLayout, SimpleForm, EditButton, DeleteButton,
+  List, Create, Edit, Show, Datagrid, SimpleShowLayout, SimpleForm, EditButton,
   TextField, ArrayField, NumberField, SingleFieldList, ChipField, SelectField,
   TextInput, NumberInput, ArrayInput, SelectInput, SimpleFormIterator,
 } from 'react-admin';
+import { withStyles } from '@material-ui/core';
 import DesktopMacIcon from '@material-ui/icons/DesktopMac';
+import DeleteButton from '../ui/button/DeleteButtonWithConfirmation';
 
 export const InstanceIcon = DesktopMacIcon;
+
+const styles = {
+  status: { color: 'red' },
+};
 
 const resourceChoices = [
   { id: 'cpu', name: 'cpu' },
@@ -23,16 +29,26 @@ const statusChoices = [
   { id: 'deleted', name: 'deleted' },
 ];
 
+export const StatusField = withStyles(styles)(({
+  classes, source, record, ...props
+}) => (
+  record[source] === 'admin'
+    ? <SelectField className={classes.status} source={source} record={record} {...props} />
+    : <SelectField source={source} record={record} {...props} />
+));
+StatusField.propTypes = SelectField.propTypes;
+StatusField.defaultProps = SelectField.defaultProps;
+
 export const InstanceList = props => (
   <List {...props}>
     <Datagrid rowClick="show">
       <TextField source="id" />
       <TextField source="name" />
-      <SelectField source="status" choices={statusChoices} />
-      <SelectField source="next_status" choices={statusChoices} />
+      <StatusField source="status" choices={statusChoices} />
+      <StatusField source="next_status" choices={statusChoices} />
       <TextField source="url" />
       <ArrayField source="runs">
-        <SingleFieldList>
+        <SingleFieldList linkType={false}>
           <ChipField source="token" />
         </SingleFieldList>
       </ArrayField>
@@ -51,7 +67,7 @@ const InstanceTitle = ({ record }) => (
 
 export const InstanceCreate = props => (
   <Create {...props}>
-    <SimpleForm>
+    <SimpleForm redirect="show">
       <TextInput source="name" />
       <SelectInput source="resource" choices={resourceChoices} />
       <NumberInput source="count" />
@@ -61,14 +77,14 @@ export const InstanceCreate = props => (
 
 export const InstanceEdit = props => (
   <Edit title={<InstanceTitle />} {...props}>
-    <SimpleForm>
+    <SimpleForm redirect="show">
       <TextField source="id" />
       <TextField source="name" />
       <SelectInput source="status" choices={statusChoices} />
       <SelectInput source="next_status" choices={statusChoices} />
       <TextInput source="url" />
       <ArrayInput source="runs">
-        <SimpleFormIterator>
+        <SimpleFormIterator disableAdd>
           <NumberInput source="count" />
           <TextInput source="token" />
         </SimpleFormIterator>
@@ -85,8 +101,8 @@ export const InstanceShow = props => (
     <SimpleShowLayout>
       <TextField source="id" />
       <TextField source="name" />
-      <SelectField source="status" choices={statusChoices} />
-      <SelectField source="next_status" choices={statusChoices} />
+      <StatusField source="status" choices={statusChoices} />
+      <StatusField source="next_status" choices={statusChoices} />
       <TextField source="url" />
       <ArrayField source="runs">
         <Datagrid>

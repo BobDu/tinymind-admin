@@ -4,15 +4,34 @@ import {
   TextField, NumberField, BooleanField, ReferenceField, ArrayField,
 } from 'react-admin';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
-import UnixDateField from '../field/UnixDateField';
+import UnixDateField from '../ui/field/UnixDateField';  // eslint: disable
 
 export const ExecutionIcon = FlightTakeoffIcon;
+
+const TokenField = ({ record = {} }) => {
+  const token = record.token;
+  const url = 'https://www.tinymind.com/executions/' + token;
+  return <a href={url} target="_blank" style={{ textDecoration: 'none' }}>{token}</a>
+};
+TokenField.defaultProps = {
+  label: 'Token',
+  addLabel: true,
+};
+
+const FrameworkField = ({ record = {} }) => (
+  <span>{record.env.framework.name} {record.env.framework.version}</span>
+);
+FrameworkField.defaultProps = {
+  label: 'Framework',
+  addLabel: true,
+};
 
 export const ExecutionList = props => (
   <List {...props}>
     <Datagrid rowClick="show">
       <TextField source="id" />
-      <TextField source="token" />
+      <TokenField />
+      <TextField source="status" />
       <ReferenceField source="user_id" reference="users" linkType="show">
         <TextField source="username" />
       </ReferenceField>
@@ -21,13 +40,10 @@ export const ExecutionList = props => (
       <ReferenceField source="instance_id" reference="instances" linkType="show" allowEmpty={true}>
         <TextField source="name" />
       </ReferenceField>
-      <TextField source="status" />
-      <TextField source="env.framework" />
+      <FrameworkField />
       <TextField source="resource" />
-      <NumberField source="resource_count" />
-      {/* <ArrayField source="params"><SingleFieldList><ChipField source="end" /></SingleFieldList></ArrayField> */}
-      <TextField source="data" />
-      {/* <ArrayField source="events"><SingleFieldList><ChipField source="ts" /></SingleFieldList></ArrayField> */}
+      <NumberField source="resource_count" label="Count" />
+      <NumberField source="cost" />
       <UnixDateField source="created_at" />
       <UnixDateField source="completed_at" />
     </Datagrid>
@@ -42,6 +58,8 @@ export const ExecutionShow = props => (
   <Show title={<ExecutionTitle />} {...props}>
     <SimpleShowLayout>
       <TextField source="id" />
+      <TokenField />
+      <NumberField source="cost" />
       <ReferenceField source="user_id" reference="users" linkType="show">
         <TextField source="username" />
       </ReferenceField>
@@ -49,13 +67,13 @@ export const ExecutionShow = props => (
       <ReferenceField source="instance_id" reference="instances" linkType="show" allowEmpty={true}>
         <TextField source="name" />
       </ReferenceField>
+      <FrameworkField />
       <NumberField source="seq" />
       <TextField source="subseq" />
       <TextField source="batch_size" />
       <TextField source="prev_token" />
       <TextField source="prev_mode" />
       <TextField source="status" />
-      <TextField source="token" />
       <TextField source="batch_token" />
       <TextField source="summary" />
       <TextField source="env.language.name" />

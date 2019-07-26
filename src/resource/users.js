@@ -1,11 +1,12 @@
 import React from 'react';
 import {
   List, Edit, Show, Datagrid, SimpleShowLayout, SimpleForm, EditButton,
-  TextField, BooleanField, ArrayField, SingleFieldList, ChipField, SelectField, ImageField,
-  TextInput, BooleanInput, SelectInput,
+  TextField, BooleanField, SingleFieldList, ChipField, SelectField,
+  ImageField, ReferenceArrayField,
+  TextInput, SelectInput, ReferenceArrayInput, SelectArrayInput,
 } from 'react-admin';
 import GroupIcon from '@material-ui/icons/Group';
-import UnixDateField from '../field/UnixDateField';
+import UnixDateField from '../ui/field/UnixDateField';
 
 export const UserIcon = GroupIcon;
 
@@ -22,12 +23,12 @@ export const UserList = props => (
       <TextField source="name" />
       <SelectField source="locale" choices={localeChoices} />
       <BooleanField source="email_confirmed_at" />
-      <UnixDateField source="created_at" />
-      <ArrayField source="roles">
-        <SingleFieldList>
-          <ChipField source="id" />
+      <ReferenceArrayField source="roles" reference="roles">
+        <SingleFieldList linkType="show">
+          <ChipField source="name" />
         </SingleFieldList>
-      </ArrayField>
+      </ReferenceArrayField>
+      <UnixDateField source="created_at" />
       <EditButton />
     </Datagrid>
   </List>
@@ -45,7 +46,10 @@ export const UserEdit = props => (
       <TextInput source="name" />
       <SelectInput source="locale" choices={localeChoices} />
       <TextInput source="avatar_url" />
-      <BooleanInput source="email_confirmed_at" />
+      <BooleanField source="email_confirmed_at" />
+      <ReferenceArrayInput source="roles" reference="roles" label="Roles">
+        <SelectArrayInput source="name" />
+      </ReferenceArrayInput>
       <UnixDateField source="created_at" />
     </SimpleForm>
   </Edit>
@@ -60,13 +64,12 @@ export const UserShow = props => (
       <SelectField source="locale" choices={localeChoices} />
       <ImageField source="avatar_url" title="Avatar" />
       <BooleanField source="email_confirmed_at" />
+      <ReferenceArrayField source="roles" reference="roles">
+        <SingleFieldList linkType="show">
+          <ChipField source="name" />
+        </SingleFieldList>
+      </ReferenceArrayField>
       <UnixDateField source="created_at" />
-      <ArrayField source="roles">
-        <Datagrid>
-          <TextField source="id" />
-          <TextField source="name" />
-        </Datagrid>
-      </ArrayField>
     </SimpleShowLayout>
   </Show>
 );

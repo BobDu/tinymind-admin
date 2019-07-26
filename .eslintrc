@@ -6,6 +6,7 @@
     "plugin:import/warnings",
     "plugin:react/recommended"
   ],
+  "parser":"babel-eslint",
   "env":{
     "browser":true,
     "node":true,
@@ -16,7 +17,8 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true,
-      "modules":true
+      "modules":true,
+      "experimentalObjectRestSpread": true
     }
   },
   "plugins": [
@@ -25,6 +27,15 @@
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "moduleDirectory:": ["node_modules","tinymind-admin/src/"]
+      }
     }
+
+  },
+  "rules": {
+    "react/jsx-filename-extension": [0]
   }
 }

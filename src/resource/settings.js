@@ -1,9 +1,10 @@
 import React from 'react';
 import {
-  List, Datagrid, Show, SimpleShowLayout,
+  List, Create, Datagrid, Show, SimpleShowLayout, EditButton,
   TextField, NumberField, Edit, SimpleForm, TextInput, NumberInput,
 } from 'react-admin';
 import SettingsIcon from '@material-ui/icons/Settings';
+import DeleteButton from '../ui/button/DeleteButtonWithConfirmation';
 
 export const SettingIcon = SettingsIcon;
 
@@ -13,8 +14,19 @@ export const SettingList = props => (
       <TextField source="id" />
       <TextField source="key" label="Key" />
       <NumberField source="value.v" label="Value" />
+      <EditButton />
+      <DeleteButton undoable={false} />
     </Datagrid>
   </List>
+);
+
+export const SettingCreate = props => (
+  <Create {...props}>
+    <SimpleForm redirect="show">
+      <TextInput source="key" label="Key" />
+      <NumberInput source="value.v" label="Value" />
+    </SimpleForm>
+  </Create>
 );
 
 export const SettingShow = props => (
@@ -30,7 +42,7 @@ export const SettingShow = props => (
 export const SettingEdit = props => (
   <Edit {...props}>
     <SimpleForm>
-      <TextInput source="id" />
+      <TextField source="id" />
       <TextInput source="key" label="Key" />
       <NumberInput source="value.v" label="Value" />
     </SimpleForm>

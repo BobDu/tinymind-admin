@@ -32,16 +32,22 @@
   "homepage": "https://github.com/BobDu/tinymind-admin#readme",
   "main": "index.js",
   "dependencies": {
-    "@material-ui/icons": "x",
+    "@material-ui/core": "*",
+    "@material-ui/icons": "*",
+    "classnames": "*",
     "moment": "2.x",
-    "prop-types": "^15.7.2",
-    "ra-data-json-server": "^2.9.4",
+    "prop-types": "*",
+    "ra-core": "*",
+    "ra-data-json-server": "*",
     "react": "16.x",
     "react-admin": "2.x",
     "react-dom": "16.x",
-    "react-scripts": "3.x"
+    "react-redux": "*",
+    "react-scripts": "3.x",
+    "recompose": "*"
   },
   "devDependencies": {
+    "babel-eslint": "10.0.1",
     "eslint": "5.x",
     "eslint-config-airbnb": "*",
     "eslint-plugin-import": "*",
