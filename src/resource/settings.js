@@ -22,7 +22,7 @@ export const SettingList = props => (
 
 export const SettingCreate = props => (
   <Create {...props}>
-    <SimpleForm redirect="show">
+    <SimpleForm redirect="list">
       <TextInput source="key" label="Key" />
       <NumberInput source="value.v" label="Value" />
     </SimpleForm>

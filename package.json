@@ -35,6 +35,7 @@
     "@material-ui/core": "*",
     "@material-ui/icons": "*",
     "classnames": "*",
+    "history": "4.x",
     "moment": "2.x",
     "prop-types": "*",
     "ra-core": "*",

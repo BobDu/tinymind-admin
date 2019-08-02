@@ -1,18 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import { PropTypes } from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import ActionDelete from '@material-ui/icons/Delete';
+import StopIcon from '@material-ui/icons/Stop';
 import classnames from 'classnames';
-import { translate, crudDelete, startUndoable } from 'ra-core';
+import { translate } from 'ra-core';
 import IconCancel from '@material-ui/icons/Cancel';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import { Button } from 'react-admin';
+import { Button, withDataProvider, UPDATE } from 'react-admin';
 
 const styles = theme => ({
   deleteButton: {
@@ -26,7 +24,7 @@ const styles = theme => ({
   },
 });
 
-class DeleteButtonWithConfirmation extends Component {
+class ForceKillButton extends Component {
   state = {
     showDialog: false,
   };
@@ -41,54 +39,68 @@ class DeleteButtonWithConfirmation extends Component {
     this.setState({ showDialog: false });
   };
 
-  handleDelete = (event) => {
+  handleKill = (event) => {
     event.stopPropagation();
-    this.setState({ showDialog: false });
     const {
-      // eslint-disable-next-line no-shadow
-      dispatchCrudDelete, startUndoable, resource, record, basePath, redirect, undoable,
+      dataProvider, record,
     } = this.props;
-    if (undoable) {
-      startUndoable(crudDelete(resource, record.id, record, basePath, redirect));
-    } else {
-      dispatchCrudDelete(resource, record.id, record, basePath, redirect);
-    }
+    const payload = { id: record.id, data: { action: 'force-kill' } };
+    dataProvider(UPDATE, 'executions', payload, {
+      onSuccess: {
+        notification: {
+          body: 'Execution already force kill',
+          level: 'info',
+        },
+        redirectTo: '/executions',
+        refresh: true,
+      },
+      onError: {
+        notification: {
+          body: 'Error: Execution kill failed',
+          level: 'error',
+        },
+      },
+    });
+    this.setState({ showDialog: false });
   };
 
   render() {
     const { showDialog } = this.state;
     const {
-      label = 'ra.action.delete', classes = {}, className, record, titleSource,
+      label = 'Kill', classes = {}, className, record, titleSource,
     } = this.props;
-    if (!record) {
-      return null;
+    const name = titleSource? record[titleSource] : record.title ? record.title : record.name ? record.name : record.id;
+    let disabled = false;
+    const noActiveStatus = ['succeeded', 'killed', 'failed'];
+    if (noActiveStatus.indexOf(record.status) !== -1) {
+      disabled = true;
     }
     return (
       <Fragment>
         <Button
           onClick={this.handleClick}
           label={label}
+          disabled={disabled}
           className={classnames('ra-delete-button', classes.deleteButton, className)}
           key="button"
         >
-          <ActionDelete />
+          <StopIcon />
         </Button>
-        <Dialog fullWidth open={showDialog} onClose={this.handleCloseClick} aria-label="Are you sure?">
+        <Dialog fullWidth open={showDialog} onClose={this.handleCloseClick} laria-label="Are you sure?">
           <DialogTitle>
-            Deleting "
-            {titleSource ? record[titleSource] : record.title ? record.title : record.name ? record.name : '– unnamed –'}"
+            Killing - { name }
           </DialogTitle>
           <DialogContent>
-            <div>Are you sure you want to delete this entry? This action is permanent.</div>
+            <div>Are you sure you want to kill this entry? This action is permanent.</div>
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={this.handleDelete}
+              onClick={this.handleKill}
               label={label}
               className={classnames('ra-delete-button', classes.deleteButton, className)}
               key="button"
             >
-              <ActionDelete />
+              <StopIcon />
             </Button>
             <Button label="ra.action.cancel" onClick={this.handleCloseClick}>
               <IconCancel />
@@ -100,30 +112,20 @@ class DeleteButtonWithConfirmation extends Component {
   }
 }
 
-DeleteButtonWithConfirmation.propTypes = {
+ForceKillButton.propTypes = {
+  dataProvider: PropTypes.func.isRequired,
   basePath: PropTypes.string,
   classes: PropTypes.object,
   className: PropTypes.string,
-  dispatchCrudDelete: PropTypes.func.isRequired,
   label: PropTypes.string,
   record: PropTypes.object,
   redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]),
   resource: PropTypes.string.isRequired,
-  startUndoable: PropTypes.func,
   translate: PropTypes.func,
-  undoable: PropTypes.bool,
 };
 
-DeleteButtonWithConfirmation.defaultProps = {
+ForceKillButton.defaultProps = {
   redirect: 'list',
-  undoable: true,
 };
 
-export default compose(
-  connect(
-    null,
-    { startUndoable, dispatchCrudDelete: crudDelete },
-  ),
-  translate,
-  withStyles(styles),
-)(DeleteButtonWithConfirmation);
+export default withDataProvider(withStyles(styles)(translate(ForceKillButton)));

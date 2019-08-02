@@ -4,14 +4,16 @@ import {
   TextField, NumberField, BooleanField, ReferenceField, ArrayField,
 } from 'react-admin';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
-import UnixDateField from '../ui/field/UnixDateField';  // eslint: disable
+import UnixDateField from '../ui/field/UnixDateField';
+import JsonField from '../ui/field/JsonField';
+import ForceKillButton from '../ui/button/ForceKillButton';
 
 export const ExecutionIcon = FlightTakeoffIcon;
 
 const TokenField = ({ record = {} }) => {
   const token = record.token;
   const url = 'https://www.tinymind.com/executions/' + token;
-  return <a href={url} target="_blank" style={{ textDecoration: 'none' }}>{token}</a>
+  return <a href={url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>{token}</a>
 };
 TokenField.defaultProps = {
   label: 'Token',
@@ -46,6 +48,7 @@ export const ExecutionList = props => (
       <NumberField source="cost" />
       <UnixDateField source="created_at" />
       <UnixDateField source="completed_at" />
+      <ForceKillButton titleSource="token" label="Kill" />
     </Datagrid>
   </List>
 );
@@ -96,7 +99,7 @@ export const ExecutionShow = props => (
           <TextField source="name" />
         </Datagrid>
       </ArrayField>
-      <TextField source="charts" />
+      <JsonField source="charts" />
       <TextField source="results" />
       <TextField source="stdout" />
       <TextField source="stderr" />

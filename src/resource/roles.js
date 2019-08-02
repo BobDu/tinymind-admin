@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-  List, Datagrid, Show, SimpleShowLayout, SimpleFormIterator, EditButton, DeleteButton,
-  TextField, ChipField, ArrayField, SingleFieldList,
-  Edit, SimpleForm, TextInput, ArrayInput,
+  List, Create, Datagrid, Show, SimpleShowLayout, EditButton,
+  TextField, ChipField, SingleFieldList, ReferenceArrayField,
+  Edit, SimpleForm, TextInput, ReferenceArrayInput, SelectArrayInput,
 } from 'react-admin';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import DeleteButton from '../ui/button/DeleteButtonWithConfirmation';
 
 export const RoleIcon = LockOpenIcon;
 
@@ -13,29 +14,36 @@ export const RoleList = props => (
     <Datagrid rowClick="show">
       <TextField source="id" />
       <TextField source="name" />
-      <ArrayField source="permissions">
-        <SingleFieldList>
-          <ChipField source="id" />
+      <ReferenceArrayField source="permissions_ids" reference="permissions">
+        <SingleFieldList linkType={false}>
+          <ChipField source="name" />
         </SingleFieldList>
-      </ArrayField>
+      </ReferenceArrayField>
       <EditButton />
       <DeleteButton />
     </Datagrid>
   </List>
 );
 
+export const RoleCreate = props => (
+  <Create {...props}>
+    <SimpleForm redirect="list">
+      <TextInput source="name" />
+      <ReferenceArrayInput source="permissions_ids" reference="permissions" label="Permissions">
+        <SelectArrayInput source="name" />
+      </ReferenceArrayInput>
+    </SimpleForm>
+  </Create>
+);
+
 export const RoleEdit = props => (
   <Edit {...props}>
     <SimpleForm>
-      <TextInput source="id" />
-      <TextInput source="name" />
-      <ArrayInput source="permissions">
-        <SimpleFormIterator>
-          <TextInput source="id" />
-          <TextInput source="name" />
-          <TextInput source="identifier" />
-        </SimpleFormIterator>
-      </ArrayInput>
+      <TextField source="id" />
+      <TextField source="name" />
+      <ReferenceArrayInput source="permissions_ids" reference="permissions" label="Permissions">
+        <SelectArrayInput source="name" />
+      </ReferenceArrayInput>
     </SimpleForm>
   </Edit>
 );
@@ -45,13 +53,11 @@ export const RoleShow = props => (
     <SimpleShowLayout>
       <TextField source="id" />
       <TextField source="name" />
-      <ArrayField source="permissions">
-        <Datagrid>
-          <TextField source="id" />
-          <TextField source="name" />
-          <TextField source="identifier" />
-        </Datagrid>
-      </ArrayField>
+      <ReferenceArrayField source="permissions_ids" reference="permissions" label="Permissions">
+        <SingleFieldList linkType={false}>
+          <ChipField source="name" />
+        </SingleFieldList>
+      </ReferenceArrayField>
     </SimpleShowLayout>
   </Show>
 );

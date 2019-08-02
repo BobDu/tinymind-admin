@@ -5,6 +5,7 @@ import {
   TextInput, NumberInput, ArrayInput, SelectInput, SimpleFormIterator,
 } from 'react-admin';
 import { withStyles } from '@material-ui/core';
+import CardActions from '@material-ui/core/CardActions';
 import DesktopMacIcon from '@material-ui/icons/DesktopMac';
 import DeleteButton from '../ui/button/DeleteButtonWithConfirmation';
 
@@ -96,8 +97,21 @@ export const InstanceEdit = props => (
   </Edit>
 );
 
+const cardActionStyle = {
+  zIndex: 2,
+  display: 'inline-block',
+  float: 'right',
+};
+
+const InstanceShowActions = ({ basePath, data, resource }) => (
+  <CardActions style={cardActionStyle}>
+    <EditButton basePath={basePath} record={data} />
+    <DeleteButton basePath={basePath} record={data} resource={resource} />
+  </CardActions>
+);
+
 export const InstanceShow = props => (
-  <Show title={<InstanceTitle />} {...props}>
+  <Show title={<InstanceTitle />} actions={<InstanceShowActions />} {...props}>
     <SimpleShowLayout>
       <TextField source="id" />
       <TextField source="name" />

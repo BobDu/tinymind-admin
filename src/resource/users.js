@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  List, Edit, Show, Datagrid, SimpleShowLayout, SimpleForm, EditButton,
+  List, Edit, Show, Datagrid, SimpleShowLayout, SimpleForm, EditButton, Filter,
   TextField, BooleanField, SingleFieldList, ChipField, SelectField,
   ImageField, ReferenceArrayField,
   TextInput, SelectInput, ReferenceArrayInput, SelectArrayInput,
@@ -15,8 +15,14 @@ const localeChoices = [
   { id: 'zh_CN', name: 'zh_CN' },
 ];
 
+const UserFilter = props => (
+  <Filter {...props}>
+    <TextInput source="q" label="Search" alwaysOn />
+  </Filter>
+);
+
 export const UserList = props => (
-  <List {...props}>
+  <List filters={<UserFilter />} {...props}>
     <Datagrid rowClick="show">
       <TextField source="id" />
       <TextField source="username" />
